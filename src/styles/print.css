@@ -1,0 +1,69 @@
+/* Print styles for monthly reports */
+@media print {
+  /* Hide interactive elements */
+  button,
+  .no-print,
+  [class*="hover"],
+  [class*="animate"] {
+    display: none !important;
+  }
+
+  /* Reset colors for better printing */
+  * {
+    background: white !important;
+    color: black !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+  }
+
+  /* Page setup */
+  @page {
+    margin: 1cm;
+    size: A4 portrait;
+  }
+
+  body {
+    margin: 0;
+    padding: 0;
+  }
+
+  /* Ensure content fits on page */
+  .max-w-7xl {
+    max-width: 100% !important;
+  }
+
+  /* Break pages at logical points */
+  .bg-white {
+    page-break-inside: avoid;
+    margin-bottom: 1rem;
+    border: 1px solid #ddd;
+  }
+
+  /* Headers */
+  h1, h2, h3 {
+    page-break-after: avoid;
+    font-weight: bold;
+  }
+
+  /* Tables and lists */
+  table, ul, ol {
+    page-break-inside: avoid;
+  }
+
+  /* Remove gradients */
+  [class*="gradient"] {
+    background: white !important;
+    border: 1px solid #333;
+  }
+
+  /* Show URLs for links */
+  a[href]:after {
+    content: " (" attr(href) ")";
+    font-size: 0.8em;
+  }
+
+  /* Icons - hide or simplify */
+  svg {
+    display: none !important;
+  }
+}

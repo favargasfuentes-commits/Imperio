@@ -21,7 +21,6 @@ export function IncomeSection({ grossSalary, setGrossSalary, dollarRate, setDoll
             <OptimizedInput
               type="number"
               min="0"
-              step="1000"
               value={grossSalary}
               onSave={(value) => setGrossSalary(value as number)}
               className="w-full pl-8 pr-3 py-3 sm:py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent text-base sm:text-lg transition-all"

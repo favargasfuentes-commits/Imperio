@@ -79,7 +79,6 @@ export function ExpensesSection({ expenses, setExpenses, person1Name, person2Nam
               <OptimizedInput
                 type="number"
                 min="0"
-                step="100"
                 value={expense.amount}
                 onSave={(value) => {
                   const newExpenses = [...expenses];

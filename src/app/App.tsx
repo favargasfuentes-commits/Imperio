@@ -109,7 +109,19 @@ export default function App() {
   const [isSaving, setIsSaving] = useState(false);
   const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' | 'info' } | null>(null);
 
-  const [activeTab, setActiveTab] = useState<'person1' | 'person2'>('person1');
+  const [activeTab, setActiveTab] = useState<'person1' | 'person2'>(() => {
+    if (typeof window === 'undefined') {
+      return 'person1';
+    }
+    const savedTab = window.localStorage.getItem('imperio-active-tab');
+    return savedTab === 'person2' ? 'person2' : 'person1';
+  });
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      window.localStorage.setItem('imperio-active-tab', activeTab);
+    }
+  }, [activeTab]);
 
   // Datos globales (persisten entre meses)
   const [loans, setLoansState] = useState<Loan[]>([]);

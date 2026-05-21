@@ -61,7 +61,6 @@ export function DeductionsSection({ deductions, setDeductions, grossSalary, pers
               <div className="w-32">
                 <OptimizedInput
                   type="number"
-                  step="0.01"
                   value={deduction.percentage}
                   onSave={(value) => {
                     const newDeductions = [...deductions];

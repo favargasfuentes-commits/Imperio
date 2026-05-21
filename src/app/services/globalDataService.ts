@@ -1,64 +1,148 @@
 import { Loan, IncomingLoan, Saving } from '../types/financialTypes';
+import { supabase } from '../../lib/supabase';
 
 const LOANS_KEY = 'global_loans';
 const INCOMING_LOANS_KEY = 'global_incoming_loans';
 const SAVINGS_KEY = 'global_savings';
 
-export async function saveLoans(loans: Loan[]): Promise<void> {
+const SUPABASE_TABLE_LOANS = 'global_loans';
+const SUPABASE_TABLE_INCOMING = 'global_incoming_loans';
+const SUPABASE_TABLE_SAVINGS = 'global_savings';
+
+function readFromLocalStorage<T>(key: string): T[] {
   try {
-    localStorage.setItem(LOANS_KEY, JSON.stringify(loans));
+    const stored = localStorage.getItem(key);
+    return stored ? JSON.parse(stored) as T[] : [];
   } catch (error) {
-    console.error('Error saving loans:', error);
+    console.error(`Error reading ${key} from localStorage:`, error);
+    return [];
+  }
+}
+
+function saveToLocalStorage<T>(key: string, data: T[]): void {
+  try {
+    localStorage.setItem(key, JSON.stringify(data));
+  } catch (error) {
+    console.error(`Error saving ${key} to localStorage:`, error);
     throw error;
   }
+}
+
+export async function saveLoans(loans: Loan[]): Promise<void> {
+  if (supabase) {
+    try {
+      const payload = loans.map(loan => ({ id: loan.id, data: loan }));
+      const { error } = await supabase
+        .from(SUPABASE_TABLE_LOANS)
+        .upsert(payload);
+
+      if (!error) return;
+
+      throw error;
+    } catch (error) {
+      console.error('Supabase saveLoans failed, falling back to localStorage:', error);
+    }
+  }
+
+  saveToLocalStorage<Loan>(LOANS_KEY, loans);
 }
 
 export async function getLoans(): Promise<Loan[]> {
-  try {
-    const stored = localStorage.getItem(LOANS_KEY);
-    return stored ? JSON.parse(stored) : [];
-  } catch (error) {
-    console.error('Error getting loans:', error);
-    return [];
+  if (supabase) {
+    try {
+      const { data, error } = await supabase
+        .from(SUPABASE_TABLE_LOANS)
+        .select('*');
+
+      if (!error && Array.isArray(data)) {
+        return data.map((row: any) => row.data as Loan).filter(Boolean);
+      }
+
+      if (error) throw error;
+    } catch (error) {
+      console.error('Supabase getLoans failed, falling back to localStorage:', error);
+    }
   }
+
+  return readFromLocalStorage<Loan>(LOANS_KEY);
 }
 
 export async function saveIncomingLoans(incomingLoans: IncomingLoan[]): Promise<void> {
-  try {
-    localStorage.setItem(INCOMING_LOANS_KEY, JSON.stringify(incomingLoans));
-  } catch (error) {
-    console.error('Error saving incoming loans:', error);
-    throw error;
+  if (supabase) {
+    try {
+      const payload = incomingLoans.map(l => ({ id: l.id, data: l }));
+      const { error } = await supabase
+        .from(SUPABASE_TABLE_INCOMING)
+        .upsert(payload);
+
+      if (!error) return;
+
+      throw error;
+    } catch (error) {
+      console.error('Supabase saveIncomingLoans failed, falling back to localStorage:', error);
+    }
   }
+
+  saveToLocalStorage<IncomingLoan>(INCOMING_LOANS_KEY, incomingLoans);
 }
 
 export async function getIncomingLoans(): Promise<IncomingLoan[]> {
-  try {
-    const stored = localStorage.getItem(INCOMING_LOANS_KEY);
-    return stored ? JSON.parse(stored) : [];
-  } catch (error) {
-    console.error('Error getting incoming loans:', error);
-    return [];
+  if (supabase) {
+    try {
+      const { data, error } = await supabase
+        .from(SUPABASE_TABLE_INCOMING)
+        .select('*');
+
+      if (!error && Array.isArray(data)) {
+        return data.map((row: any) => row.data as IncomingLoan).filter(Boolean);
+      }
+
+      if (error) throw error;
+    } catch (error) {
+      console.error('Supabase getIncomingLoans failed, falling back to localStorage:', error);
+    }
   }
+
+  return readFromLocalStorage<IncomingLoan>(INCOMING_LOANS_KEY);
 }
 
 export async function saveSavings(savings: Saving[]): Promise<void> {
-  try {
-    localStorage.setItem(SAVINGS_KEY, JSON.stringify(savings));
-  } catch (error) {
-    console.error('Error saving savings:', error);
-    throw error;
+  if (supabase) {
+    try {
+      const payload = savings.map(s => ({ id: s.id, data: s }));
+      const { error } = await supabase
+        .from(SUPABASE_TABLE_SAVINGS)
+        .upsert(payload);
+
+      if (!error) return;
+
+      throw error;
+    } catch (error) {
+      console.error('Supabase saveSavings failed, falling back to localStorage:', error);
+    }
   }
+
+  saveToLocalStorage<Saving>(SAVINGS_KEY, savings);
 }
 
 export async function getSavings(): Promise<Saving[]> {
-  try {
-    const stored = localStorage.getItem(SAVINGS_KEY);
-    return stored ? JSON.parse(stored) : [];
-  } catch (error) {
-    console.error('Error getting savings:', error);
-    return [];
+  if (supabase) {
+    try {
+      const { data, error } = await supabase
+        .from(SUPABASE_TABLE_SAVINGS)
+        .select('*');
+
+      if (!error && Array.isArray(data)) {
+        return data.map((row: any) => row.data as Saving).filter(Boolean);
+      }
+
+      if (error) throw error;
+    } catch (error) {
+      console.error('Supabase getSavings failed, falling back to localStorage:', error);
+    }
   }
+
+  return readFromLocalStorage<Saving>(SAVINGS_KEY);
 }
 
 export async function migrateToGlobalData(monthlyDataHistory: any[]): Promise<{

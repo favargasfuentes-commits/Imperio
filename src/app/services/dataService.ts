@@ -1,23 +1,8 @@
 import { MonthlyData } from '../types/financialTypes';
+import { supabase } from '../../lib/supabase';
 
 const STORAGE_KEY = 'financial_data_history';
-const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
-const SUPABASE_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY;
 const SUPABASE_TABLE = 'financial_data_history';
-
-async function getSupabaseClient() {
-  if (!SUPABASE_URL || !SUPABASE_KEY) {
-    return null;
-  }
-
-  try {
-    const { createClient } = await import('@supabase/supabase-js');
-    return createClient(SUPABASE_URL, SUPABASE_KEY);
-  } catch (error) {
-    console.error('Supabase client initialization failed:', error);
-    return null;
-  }
-}
 
 function getAllMonthlyDataFromLocalStorage(): MonthlyData[] {
   try {
@@ -43,7 +28,6 @@ function saveMonthlyDataToLocalStorage(data: MonthlyData): void {
 }
 
 export async function saveMonthlyData(data: MonthlyData): Promise<void> {
-  const supabase = await getSupabaseClient();
   if (supabase) {
     try {
       const { error } = await supabase
@@ -69,7 +53,6 @@ export async function saveMonthlyData(data: MonthlyData): Promise<void> {
 }
 
 export async function getMonthlyData(year: number, month: number): Promise<MonthlyData | null> {
-  const supabase = await getSupabaseClient();
   if (supabase) {
     try {
       const { data, error } = await supabase
@@ -103,7 +86,6 @@ export async function getMonthlyData(year: number, month: number): Promise<Month
 }
 
 export async function getAllMonthlyData(): Promise<MonthlyData[]> {
-  const supabase = await getSupabaseClient();
   if (supabase) {
     try {
       const { data, error } = await supabase

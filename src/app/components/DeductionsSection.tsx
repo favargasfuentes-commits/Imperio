@@ -1,5 +1,5 @@
 import { MinusCircle, Percent } from 'lucide-react';
-import { Deduction } from '../App';
+import { Deduction } from '../types/financialTypes';
 import { OptimizedInput } from './OptimizedInput';
 
 interface DeductionsSectionProps {

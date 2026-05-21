@@ -1,5 +1,5 @@
 import { TrendingDown, Plus, CheckCircle2, Archive, Trash2 } from 'lucide-react';
-import { IncomingLoan, Payment } from '../App';
+import { IncomingLoan, Payment } from '../types/financialTypes'
 import { useState } from 'react';
 
 interface IncomingLoansSectionProps {

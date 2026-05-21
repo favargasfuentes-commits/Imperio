@@ -1,5 +1,5 @@
 import { HandCoins, Plus, CheckCircle2, Archive, Trash2 } from 'lucide-react';
-import { Loan, Payment } from '../App';
+import { Loan, Payment } from '../types/financialTypes'
 import { OptimizedInput } from './OptimizedInput';
 import { useState } from 'react';
 

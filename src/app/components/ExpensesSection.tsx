@@ -1,5 +1,5 @@
 import { ShoppingCart, Users, User, Copy, RefreshCw } from 'lucide-react';
-import { Expense } from '../App';
+import { Expense } from '../types/financialTypes'
 import { OptimizedInput } from './OptimizedInput';
 
 const EXPENSE_PRESETS = [
@@ -95,7 +95,10 @@ export function ExpensesSection({ expenses, setExpenses, person1Name, person2Nam
                 value={expense.quincena}
                 onChange={(e) => {
                   const newExpenses = [...expenses];
-                  newExpenses[globalIndex].quincena = e.target.value as 1 | 2 | 'both';
+                  const selectedValue = e.target.value === 'both'
+                    ? 'both'
+                    : (parseInt(e.target.value, 10) as 1 | 2);
+                  newExpenses[globalIndex].quincena = selectedValue;
                   setExpenses(newExpenses);
                 }}
                 className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"

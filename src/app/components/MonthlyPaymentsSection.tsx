@@ -1,5 +1,5 @@
 import { Plus, CheckCircle2, Trash2, DollarSign } from 'lucide-react';
-import { Payment, Loan, IncomingLoan, Saving } from '../App';
+import type { Payment, Loan, IncomingLoan, Saving } from '../types/financialTypes';
 
 interface MonthlyPaymentsSectionProps {
   payments: Payment[];

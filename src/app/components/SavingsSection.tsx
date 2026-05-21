@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { PiggyBank, Users, User, Target, ToggleLeft, ToggleRight, Archive, Plus, Trash2 } from 'lucide-react';
-import { Saving, SavingPayment } from '../App';
+import { Saving, SavingPayment } from '../types/financialTypes'
 import { CelebrationModal } from './CelebrationModal';
 import { OptimizedInput } from './OptimizedInput';
 

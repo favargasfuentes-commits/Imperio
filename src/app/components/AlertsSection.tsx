@@ -1,5 +1,5 @@
 import { AlertTriangle, AlertCircle, Clock, CreditCard, HandCoins, Calendar } from 'lucide-react';
-import { PersonData, Expense, Saving, Loan, Credit, Payment } from '../App';
+import { PersonData, Expense, Saving, Loan, Credit, Payment } from '../types/financialTypes';
 
 interface AlertsSectionProps {
   person1: PersonData;
@@ -163,14 +163,14 @@ export function AlertsSection({ person1, person2, expenses, savings, loans, cred
           type: 'warning',
           icon: <HandCoins className="w-5 h-5" />,
           title: 'Préstamo vencido',
-          message: `El préstamo a "${loan.name}" venció hace ${Math.abs(diffDays)} día${Math.abs(diffDays) !== 1 ? 's' : ''}. Monto: ₡${loan.amount.toLocaleString('es-CR')}`
+          message: `El préstamo a "${loan.name}" venció hace ${Math.abs(diffDays)} día${Math.abs(diffDays) !== 1 ? 's' : ''}. Monto: ₡${loan.totalAmount.toLocaleString('es-CR')}`
         });
       } else if (diffDays <= 7) {
         alerts.push({
           type: 'info',
           icon: <Calendar className="w-5 h-5" />,
           title: 'Préstamo próximo a vencer',
-          message: `El préstamo a "${loan.name}" vence en ${diffDays} día${diffDays !== 1 ? 's' : ''}. Monto: ₡${loan.amount.toLocaleString('es-CR')}`
+          message: `El préstamo a "${loan.name}" vence en ${diffDays} día${diffDays !== 1 ? 's' : ''}. Monto: ₡${loan.totalAmount.toLocaleString('es-CR')}`
         });
       }
     }

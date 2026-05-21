@@ -70,6 +70,7 @@ export interface Loan {
   shared?: boolean; // Si es compartido entre ambos
   splitType?: 'percentage' | 'amount';
   splitPercentageP1?: number;
+  expectedReturn?: string;
 
   // DEPRECATED - Solo para compatibilidad con datos antiguos
   payments?: LoanPayment[];

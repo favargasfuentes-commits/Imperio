@@ -1,5 +1,5 @@
 import { Wallet, Calendar, TrendingUp } from 'lucide-react';
-import { PersonData, Expense, Saving, Loan, IncomingLoan, Credit, Payment } from '../App';
+import { PersonData, Expense, Saving, Loan, IncomingLoan, Credit, Payment } from '../types/financialTypes'
 import { OptimizedInput } from './OptimizedInput';
 import jouskcaminaGif from '../../imports/jouskcamina.gif';
 import kishcaminandoGif from '../../imports/kishcaminando.gif';
@@ -51,9 +51,11 @@ export function CoupleSummary({ person1, person2, expenses, savings, loans = [],
         const amount = e.quincena === 'both' ? e.amount / 2 : e.amount;
         if (e.shared) {
           if (e.splitType === 'amount') {
-            // División por monto
-            const amountP1 = e.splitAmountP1 || 0;
-            const amountP2 = amount - amountP1;
+            // División por monto: si es 'both', cada quincena recibe la mitad de cada parte.
+            const totalAmountP1 = e.splitAmountP1 || 0;
+            const totalAmountP2 = e.amount - totalAmountP1;
+            const amountP1 = e.quincena === 'both' ? totalAmountP1 / 2 : totalAmountP1;
+            const amountP2 = e.quincena === 'both' ? totalAmountP2 / 2 : totalAmountP2;
             return sum + (personNum === 1 ? amountP1 : amountP2);
           } else {
             // División por porcentaje
@@ -301,6 +303,14 @@ export function CoupleSummary({ person1, person2, expenses, savings, loans = [],
                     <span className="text-gray-600">Ahorro</span>
                     <span className="text-emerald-600">-{formatCurrency(activeTab === 'person1' ? p1SavingsQ1 : p2SavingsQ1)}</span>
                   </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-600">Deuda</span>
+                    <span className="text-red-600">-{formatCurrency(activeTab === 'person1' ? p1DebtPaymentsQ1 : p2DebtPaymentsQ1)}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-600">Préstamos</span>
+                    <span className="text-green-600">+{formatCurrency(activeTab === 'person1' ? p1LoanPaymentsQ1 : p2LoanPaymentsQ1)}</span>
+                  </div>
                   <div className="flex justify-between font-semibold pt-1 border-t border-indigo-200">
                     <span>Disponible</span>
                     <span className="text-indigo-600">{formatCurrency(activeTab === 'person1' ? p1AvailableQ1 : p2AvailableQ1)}</span>
@@ -322,6 +332,14 @@ export function CoupleSummary({ person1, person2, expenses, savings, loans = [],
                   <div className="flex justify-between">
                     <span className="text-gray-600">Ahorro</span>
                     <span className="text-emerald-600">-{formatCurrency(activeTab === 'person1' ? p1SavingsQ2 : p2SavingsQ2)}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-600">Deuda</span>
+                    <span className="text-red-600">-{formatCurrency(activeTab === 'person1' ? p1DebtPaymentsQ2 : p2DebtPaymentsQ2)}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-600">Préstamos</span>
+                    <span className="text-green-600">+{formatCurrency(activeTab === 'person1' ? p1LoanPaymentsQ2 : p2LoanPaymentsQ2)}</span>
                   </div>
                   <div className="flex justify-between font-semibold pt-1 border-t border-indigo-200">
                     <span>Disponible</span>

@@ -1,5 +1,5 @@
 import { Download } from 'lucide-react';
-import { MonthlyData, Loan, IncomingLoan, Saving } from '../App';
+import { MonthlyData, Loan, IncomingLoan, Saving } from '../types/financialTypes'
 
 interface ExportButtonProps {
   monthlyData: MonthlyData;

@@ -1,5 +1,5 @@
 import { CreditCard, AlertCircle, AlertTriangle, CheckCircle } from 'lucide-react';
-import { Credit, PersonData, Expense, Saving, Payment } from '../App';
+import { Credit, PersonData, Expense, Saving, Payment } from '../types/financialTypes'
 
 interface CreditSectionProps {
   credits: Credit[];

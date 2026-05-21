@@ -895,7 +895,7 @@ export default function App() {
               badge={
                 <div className="bg-purple-50 px-2 sm:px-3 py-1 rounded-lg border border-purple-100">
                   <p className="text-xs sm:text-sm font-bold text-purple-600">
-                    ₡{calculateExpensesForTab().toLocaleString('es-CR')}
+                    -₡{calculateExpensesForTab().toLocaleString('es-CR')}
                   </p>
                 </div>
               }

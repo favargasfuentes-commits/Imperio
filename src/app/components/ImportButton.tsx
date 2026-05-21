@@ -1,5 +1,5 @@
 import { Upload } from 'lucide-react';
-import { MonthlyData } from '../App';
+import { MonthlyData } from '../types/financialTypes'
 
 interface ImportButtonProps {
   onImport: (data: MonthlyData | MonthlyData[] | any) => void;

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { HandCoins, TrendingDown, PiggyBank, Target, Plus, Archive, Trash2 } from 'lucide-react';
-import { Loan, IncomingLoan, Saving, Payment } from '../App';
+import { Loan, IncomingLoan, Saving, Payment } from '../types/financialTypes'
 import { OptimizedInput } from './OptimizedInput';
 
 interface GlobalEntitiesSectionProps {

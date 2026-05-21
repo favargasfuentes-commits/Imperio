@@ -48,14 +48,12 @@ export function CoupleSummary({ person1, person2, expenses, savings, loans = [],
     return expenses
       .filter(e => e.quincena === quincena || e.quincena === 'both')
       .reduce((sum, e) => {
-        const amount = e.quincena === 'both' ? e.amount / 2 : e.amount;
+        const amount = e.amount;
         if (e.shared) {
           if (e.splitType === 'amount') {
-            // División por monto: si es 'both', cada quincena recibe la mitad de cada parte.
-            const totalAmountP1 = e.splitAmountP1 || 0;
-            const totalAmountP2 = e.amount - totalAmountP1;
-            const amountP1 = e.quincena === 'both' ? totalAmountP1 / 2 : totalAmountP1;
-            const amountP2 = e.quincena === 'both' ? totalAmountP2 / 2 : totalAmountP2;
+            // División por monto: si es 'both', cada quincena usa el monto completo.
+            const amountP1 = e.splitAmountP1 || 0;
+            const amountP2 = e.amount - amountP1;
             return sum + (personNum === 1 ? amountP1 : amountP2);
           } else {
             // División por porcentaje

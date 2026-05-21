@@ -46,7 +46,14 @@ export function CoupleSummary({ person1, person2, expenses, savings, loans = [],
   const calculateExpensesForPerson = (personNum: 1 | 2, quincena: 1 | 2) => {
     const owner = personNum === 1 ? 'person1' : 'person2';
     return expenses
-      .filter(e => e.quincena === quincena || e.quincena === 'both')
+      .filter((e) => {
+        const normalizedQuincena = typeof e.quincena === 'number'
+          ? e.quincena
+          : e.quincena === 'both'
+            ? 'both'
+            : parseInt(e.quincena, 10) as 1 | 2;
+        return normalizedQuincena === quincena || normalizedQuincena === 'both';
+      })
       .reduce((sum, e) => {
         const amount = e.amount;
         if (e.shared) {

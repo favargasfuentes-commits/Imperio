@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { ShoppingCart, Users, User, Copy, RefreshCw } from 'lucide-react';
 import { Expense } from '../types/financialTypes'
 import { OptimizedInput } from './OptimizedInput';
@@ -22,10 +23,21 @@ interface ExpensesSectionProps {
 }
 
 export function ExpensesSection({ expenses, setExpenses, person1Name, person2Name, activeTab, onCopyFromPreviousMonth, hasPreviousMonth }: ExpensesSectionProps) {
-  // Filtrar gastos: mostrar compartidos + individuales de la persona activa
-  const visibleExpenses = expenses.filter(e =>
-    e.shared || e.owner === activeTab
-  );
+  const [quincenaFilter, setQuincenaFilter] = useState<'all' | '1' | '2' | 'both'>('all');
+
+  const visibleExpenses = expenses.filter((e) => {
+    const isApprovedByOwner = e.shared || e.owner === activeTab;
+    if (!isApprovedByOwner) {
+      return false;
+    }
+
+    if (quincenaFilter === 'all') {
+      return true;
+    }
+
+    const normalizedQuincena = typeof e.quincena === 'number' ? String(e.quincena) : e.quincena;
+    return normalizedQuincena === quincenaFilter;
+  });
 
   const totalExpenses = visibleExpenses.reduce((sum, e) => sum + e.amount, 0);
 
@@ -42,6 +54,30 @@ export function ExpensesSection({ expenses, setExpenses, person1Name, person2Nam
           </button>
         </div>
       )}
+
+      <div className="mb-4 flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4">
+        <div className="flex items-center gap-2 text-sm text-gray-700">
+          <label htmlFor="quincenaFilter" className="font-medium">
+            Filtrar quincena:
+          </label>
+          <select
+            id="quincenaFilter"
+            value={quincenaFilter}
+            onChange={(e) => {
+              setQuincenaFilter(e.target.value as 'all' | '1' | '2' | 'both');
+            }}
+            className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent bg-white"
+          >
+            <option value="all">Sin filtro</option>
+            <option value="1">Quincena 1</option>
+            <option value="2">Quincena 2</option>
+            <option value="both">Ambas</option>
+          </select>
+        </div>
+        <div className="text-sm text-gray-600">
+          Total visible: ₡{totalExpenses.toLocaleString('es-CR')}
+        </div>
+      </div>
 
       <div className="space-y-3 sm:space-y-4">
         {visibleExpenses.length === 0 && (
